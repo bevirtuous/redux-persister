@@ -1,5 +1,7 @@
 import get from 'lodash/get';
 import set from 'lodash/set';
+import throttle from 'lodash/throttle';
+import { logger, group } from '@virtuous/logger';
 import localStorageAdapater from './adapters/LocalStorageAdapater';
 
 /**
@@ -27,7 +29,12 @@ function getSubset(state, paths) {
  * @return {Function}
  */
 function persistState(config) {
-  const { key = 'redux', paths = [], adapter = localStorageAdapater } = config;
+  const {
+    key = 'redux',
+    paths = [],
+    adapter = localStorageAdapater,
+    logEngine = logger,
+  } = config;
 
   return function handleCreateStore(createStore) {
     return (reducer, initialState, enhancer) => {
@@ -35,25 +42,28 @@ function persistState(config) {
 
       adapter.get(key, (error, value) => {
         if (error) {
-          console.warn('Unable to persist state to localStorage:', error);
+          logEngine.warn('Unable to persist state to localStorage:', error);
           return;
         }
 
         finalInitialState = Object.assign({}, initialState, value);
+        group('redux-persister %cLoaded persistent state', value, 'gray');
       });
 
       const store = createStore(reducer, finalInitialState, enhancer);
 
-      store.subscribe(() => {
+      store.subscribe(throttle(() => {
         const state = store.getState();
         const subset = getSubset(state, paths);
 
         adapter.set(key, subset, (error) => {
           if (error) {
-            console.warn('Unable to persist state to localStorage:', error);
+            logEngine.warn('Unable to persist state to localStorage:', error);
+            return;
           }
+          group('redux-persister %cStored state subset', subset, 'gray');
         });
-      });
+      }, 500));
 
       return store;
     };

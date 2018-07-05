@@ -1,25 +1,25 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define(['exports', './createPersister'], factory);
+    define(['exports', './persistState'], factory);
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('./createPersister'));
+    factory(exports, require('./persistState'));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.createPersister);
+    factory(mod.exports, global.persistState);
     global.index = mod.exports;
   }
-})(this, function (exports, _createPersister) {
+})(this, function (exports, _persistState) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  Object.defineProperty(exports, 'createPersister', {
+  Object.defineProperty(exports, 'persistState', {
     enumerable: true,
     get: function () {
-      return _interopRequireDefault(_createPersister).default;
+      return _interopRequireDefault(_persistState).default;
     }
   });
 

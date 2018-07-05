@@ -1,0 +1,63 @@
+import get from 'lodash/get';
+import set from 'lodash/set';
+import localStorageAdapater from './adapters/LocalStorageAdapater';
+
+/**
+ * @param {Object} state The current state.
+ * @param {Array} paths The paths to persist.
+ * @return {Object}
+ */
+function getSubset(state, paths) {
+  if (!paths.length) {
+    return state;
+  }
+
+  const subset = {};
+  paths.forEach((path) => {
+    set(subset, path, get(state, path));
+  });
+
+  return subset;
+}
+
+/**
+ * @param {Object} config The middleware config.
+ * @param {string} [config.key='redux'] The storage key.
+ * @param {Array} [config.paths=[]] The paths to store. It persists the whole state of not set.
+ * @return {Function}
+ */
+function persistState(config) {
+  const { key = 'redux', paths = [], adapter = localStorageAdapater } = config;
+
+  return function handleCreateStore(createStore) {
+    return (reducer, initialState, enhancer) => {
+      let finalInitialState = initialState;
+
+      adapter.get(key, (error, value) => {
+        if (error) {
+          console.warn('Unable to persist state to localStorage:', error);
+          return;
+        }
+
+        finalInitialState = Object.assign({}, initialState, value);
+      });
+
+      const store = createStore(reducer, finalInitialState, enhancer);
+
+      store.subscribe(() => {
+        const state = store.getState();
+        const subset = getSubset(state, paths);
+
+        adapter.set(key, subset, (error) => {
+          if (error) {
+            console.warn('Unable to persist state to localStorage:', error);
+          }
+        });
+      });
+
+      return store;
+    };
+  };
+}
+
+export default persistState;

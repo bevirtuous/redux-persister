@@ -1,1 +1,1 @@
-export { default as createPersister } from './createPersister';
+export { default as persistState } from './persistState';

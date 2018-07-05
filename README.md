@@ -1,5 +1,4 @@
-redux-localstorage
-==================
+# @virtuous/redux-persister
 
 Store enhancer that syncs (a subset) of your Redux store state to localstorage.
 
@@ -73,7 +72,7 @@ If you're using immutable collections or some other custom collection, redux-loc
 type config.serialize = (subset: Collection) => serializedData: String
 ```
 The default serialization strategy is JSON.stringify. Specifying a serialize function as part of your config will override this.
-This function receives a single argument (the subset of your store's state about to be persisted) and should return a serialized (i.e. stringified) representation thereof. 
+This function receives a single argument (the subset of your store's state about to be persisted) and should return a serialized (i.e. stringified) representation thereof.
 
 ##### config.deserialize
 ```js

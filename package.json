@@ -1,32 +1,41 @@
 {
-  "name": "redux-localstorage",
-  "version": "0.4.1",
+  "name": "@virtuous/redux-persister",
+  "version": "1.0.0-beta.1",
   "description": "Store enhancer that syncs (a subset of) your redux store state to localstorage.",
-  "main": "lib/persistState.js",
+  "license": "MIT",
+  "main": "./dist",
   "scripts": {
-    "prepublish": "make clean build",
-    "test": "make test"
+    "build": "rm -rf dist/ && NODE_ENV=production babel src --out-dir dist --no-comments"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/elgerlambert/redux-localstorage.git"
+    "url": "git+https://github.com/virtuous/redux-persister.git"
   },
-  "keywords": [
-    "Redux",
-    "localstorage"
-  ],
-  "author": "Elger Lambert <elgerlambert@gmail.com>",
-  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/elgerlambert/redux-localstorage/issues"
+    "url": "https://github.com/virtuous/redux-persister/issues"
   },
-  "homepage": "https://github.com/elgerlambert/redux-localstorage#readme",
+  "homepage": "https://github.com/virtuous/redux-persister#readme",
+  "keywords": [
+    "redux",
+    "localstorage",
+    "persist"
+  ],
+  "contributors": [
+    "Florian Müller <florian.mueller81@gmx.de> (https://github.com/devbucket)"
+  ],
   "devDependencies": {
-    "babel": "^5.8.5",
-    "babel-core": "^5.8.5",
-    "babel-eslint": "^4.0.0",
-    "chai": "^3.2.0",
-    "eslint": "^0.24.1",
-    "mocha": "^2.2.5"
+    "@virtuous/eslint-config": "^1.4.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-runtime": "^6.26.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.10"
   }
 }

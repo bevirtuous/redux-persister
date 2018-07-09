@@ -1,11 +1,13 @@
 {
   "name": "@virtuous/redux-persister",
   "version": "1.0.0-beta.3",
-  "description": "Store enhancer that syncs (a subset of) your redux store state to localstorage.",
+  "description": "Store enhancer that syncs (a subset of) your redux store state to localStorage.",
   "license": "MIT",
   "main": "./dist",
   "scripts": {
-    "build": "rm -rf dist/ && NODE_ENV=production babel src --out-dir dist --no-comments"
+    "build": "rm -rf dist/ && NODE_ENV=production babel src --out-dir dist --no-comments",
+    "preversion": "yarn run build",
+    "postversion": "git push --all && git push --tags && npm publish --access=public --tag=beta"
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 import set from 'lodash/set';
-import throttle from 'lodash/throttle';
+import debounce from 'lodash/debounce';
 import { logger, group } from '@virtuous/logger';
 import localStorageAdapater from './adapters/LocalStorageAdapater';
 
@@ -52,18 +52,16 @@ function persistState(config) {
 
       const store = createStore(reducer, finalInitialState, enhancer);
 
-      store.subscribe(throttle(() => {
+      store.subscribe(() => {
         const state = store.getState();
         const subset = getSubset(state, paths);
 
-        adapter.set(key, subset, (error) => {
+        adapter.set(key, subset, debounce((error) => {
           if (error) {
             logEngine.warn('Unable to persist state to localStorage:', error);
-            return;
           }
-          group('redux-persister %cStored state subset', subset, 'gray');
-        });
-      }, 500));
+        }, 100));
+      });
 
       return store;
     };

@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/redux-persister",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0",
   "description": "Store enhancer that syncs (a subset of) your redux store state to localstorage.",
   "license": "MIT",
   "main": "./dist",

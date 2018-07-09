@@ -1,16 +1,16 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define(['exports', 'lodash/get', 'lodash/set', 'lodash/throttle', '@virtuous/logger', './adapters/LocalStorageAdapater'], factory);
+    define(['exports', 'lodash/get', 'lodash/set', 'lodash/debounce', '@virtuous/logger', './adapters/LocalStorageAdapater'], factory);
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('lodash/get'), require('lodash/set'), require('lodash/throttle'), require('@virtuous/logger'), require('./adapters/LocalStorageAdapater'));
+    factory(exports, require('lodash/get'), require('lodash/set'), require('lodash/debounce'), require('@virtuous/logger'), require('./adapters/LocalStorageAdapater'));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.get, global.set, global.throttle, global.logger, global.LocalStorageAdapater);
+    factory(mod.exports, global.get, global.set, global.debounce, global.logger, global.LocalStorageAdapater);
     global.persistState = mod.exports;
   }
-})(this, function (exports, _get, _set, _throttle, _logger, _LocalStorageAdapater) {
+})(this, function (exports, _get, _set, _debounce, _logger, _LocalStorageAdapater) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -21,7 +21,7 @@
 
   var _set2 = _interopRequireDefault(_set);
 
-  var _throttle2 = _interopRequireDefault(_throttle);
+  var _debounce2 = _interopRequireDefault(_debounce);
 
   var _LocalStorageAdapater2 = _interopRequireDefault(_LocalStorageAdapater);
 
@@ -71,18 +71,16 @@
 
         var store = createStore(reducer, finalInitialState, enhancer);
 
-        store.subscribe((0, _throttle2.default)(function () {
+        store.subscribe(function () {
           var state = store.getState();
           var subset = getSubset(state, paths);
 
-          adapter.set(key, subset, function (error) {
+          adapter.set(key, subset, (0, _debounce2.default)(function (error) {
             if (error) {
               logEngine.warn('Unable to persist state to localStorage:', error);
-              return;
             }
-            (0, _logger.group)('redux-persister %cStored state subset', subset, 'gray');
-          });
-        }, 500));
+          }, 100));
+        });
 
         return store;
       };

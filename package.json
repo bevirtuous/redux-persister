@@ -5,9 +5,11 @@
   "license": "MIT",
   "main": "./dist",
   "scripts": {
+    "prebuild": "rm -rf ./dist",
     "build": "rm -rf dist/ && NODE_ENV=production babel src --out-dir dist --no-comments",
+    "postbuild": "git add -A",
     "preversion": "yarn run build",
-    "postversion": "git push --all && git push --tags && npm publish --access=public --tag=beta"
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",

@@ -28,7 +28,7 @@
     "Florian Müller <florian.mueller81@gmx.de> (https://github.com/devbucket)"
   ],
   "devDependencies": {
-    "@virtuous/eslint-config": "^1.4.0",
+    "@virtuous/eslint-config": "^1.4.1",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -40,7 +40,8 @@
     "babel-runtime": "^6.26.0"
   },
   "dependencies": {
-    "@virtuous/logger": "1.0.0-beta.4",
+    "@virtuous/logger": "^1.0.0",
+    "greenlet": "^1.0.1",
     "lodash": "^4.17.10"
   }
 }

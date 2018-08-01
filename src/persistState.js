@@ -4,19 +4,22 @@ import debounce from 'lodash/debounce';
 import { logger, group } from '@virtuous/logger';
 import localStorageAdapater from './adapters/LocalStorageAdapater';
 
+const defaultPaths = [];
+
 /**
  * @param {Object} state The current state.
- * @param {Array} paths The paths to persist.
+ * @param {Array} [paths=[]] The paths to persist.
  * @return {Object}
  */
-function getSubset(state, paths) {
+function getSubset(state, paths = defaultPaths) {
   if (!paths.length) {
     return state;
   }
 
   const subset = {};
-  paths.forEach((path) => {
-    set(subset, path, get(state, path));
+
+  paths.forEach((entry) => {
+    set(subset, entry, get(state, entry));
   });
 
   return subset;
@@ -28,7 +31,7 @@ function getSubset(state, paths) {
  * @param {Array} [config.paths=[]] The paths to store. It persists the whole state of not set.
  * @return {Function}
  */
-function persistState(config) {
+export function persistState(config) {
   const {
     key = 'redux',
     paths = [],
@@ -46,7 +49,10 @@ function persistState(config) {
           return;
         }
 
-        finalInitialState = Object.assign({}, initialState, value);
+        finalInitialState = {
+          ...initialState,
+          ...value,
+        };
         group('redux-persister %cLoaded persistent state', value, 'gray');
       });
 
@@ -67,5 +73,3 @@ function persistState(config) {
     };
   };
 }
-
-export default persistState;

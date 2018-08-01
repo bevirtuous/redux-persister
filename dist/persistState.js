@@ -16,6 +16,7 @@
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
+  exports.persistState = persistState;
 
   var _get2 = _interopRequireDefault(_get);
 
@@ -31,14 +32,33 @@
     };
   }
 
-  function getSubset(state, paths) {
+  var _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  var defaultPaths = [];
+
+  function getSubset(state) {
+    var paths = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultPaths;
+
     if (!paths.length) {
       return state;
     }
 
     var subset = {};
-    paths.forEach(function (path) {
-      (0, _set2.default)(subset, path, (0, _get2.default)(state, path));
+
+    paths.forEach(function (entry) {
+      (0, _set2.default)(subset, entry, (0, _get2.default)(state, entry));
     });
 
     return subset;
@@ -65,7 +85,7 @@
             return;
           }
 
-          finalInitialState = Object.assign({}, initialState, value);
+          finalInitialState = _extends({}, initialState, value);
           (0, _logger.group)('redux-persister %cLoaded persistent state', value, 'gray');
         });
 
@@ -86,6 +106,4 @@
       };
     };
   }
-
-  exports.default = persistState;
 });

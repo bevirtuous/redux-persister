@@ -1,1 +1,1 @@
-export { default as persistState } from './persistState';
+export * from './persistState';

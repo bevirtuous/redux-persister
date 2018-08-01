@@ -1,16 +1,16 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define(['exports', './Adapter'], factory);
+    define(['exports', './Adapter', '../helpers'], factory);
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('./Adapter'));
+    factory(exports, require('./Adapter'), require('../helpers'));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.Adapter);
+    factory(mod.exports, global.Adapter, global.helpers);
     global.LocalStorageAdapater = mod.exports;
   }
-})(this, function (exports, _Adapter2) {
+})(this, function (exports, _Adapter2, _helpers) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -85,23 +85,24 @@
     _createClass(LocalStorageAdapater, [{
       key: 'set',
       value: function set(key, value, callback) {
-        try {
-          var serializedValue = JSON.stringify(value);
-          callback(null, this.storage.setItem(key, serializedValue));
-        } catch (error) {
-          callback(error);
-        }
+        var _this2 = this;
+
+        (0, _helpers.jsonStringify)(value).then(function (serializedValue) {
+          return callback(null, _this2.storage.setItem(key, serializedValue));
+        }).catch(function (error) {
+          return callback(error);
+        });
       }
     }, {
       key: 'get',
       value: function get(key, callback) {
-        try {
-          var value = this.storage.getItem(key);
-          var deserializedValue = JSON.parse(value);
-          callback(null, deserializedValue);
-        } catch (error) {
-          callback(error);
-        }
+        var value = this.storage.getItem(key);
+
+        (0, _helpers.jsonParse)(value).then(function (deserializedValue) {
+          return callback(null, deserializedValue);
+        }).catch(function (error) {
+          return callback(error);
+        });
       }
     }]);
 

@@ -9,7 +9,9 @@
     "build": "rm -rf dist/ && NODE_ENV=production babel src --out-dir dist --no-comments",
     "postbuild": "git add -A",
     "preversion": "yarn run build",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "release": "npm publish --access=public",
+    "release:beta": "npm publish --access=public --tag=beta"
   },
   "repository": {
     "type": "git",

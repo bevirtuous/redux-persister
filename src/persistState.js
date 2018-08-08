@@ -41,7 +41,7 @@ export function persistState(config) {
 
   return function handleCreateStore(createStore) {
     return (reducer, initialState, enhancer) => {
-      let finalInitialState = initialState;
+      let finalInitialState = initialState || {};
 
       adapter.get(key, (error, value) => {
         if (error) {
@@ -50,7 +50,7 @@ export function persistState(config) {
         }
 
         finalInitialState = {
-          ...initialState,
+          ...initialState && initialState,
           ...value,
         };
         group('redux-persister %cLoaded persistent state', value, 'gray');

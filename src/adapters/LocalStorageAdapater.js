@@ -1,5 +1,4 @@
 import Adapter from './Adapter';
-import { jsonStringify, jsonParse } from '../helpers';
 
 /**
  * LocalStorage Adapater
@@ -11,9 +10,12 @@ class LocalStorageAdapater extends Adapter {
    * @param {Function} callback Gets called when the action is done.
    */
   set(key, value, callback) {
-    jsonStringify(value)
-      .then(serializedValue => callback(null, this.storage.setItem(key, serializedValue)))
-      .catch(error => callback(error));
+    try {
+      const serializedValue = JSON.stringify(value);
+      callback(null, this.storage.setItem(key, serializedValue));
+    } catch (error) {
+      callback(error);
+    }
   }
 
   /**
@@ -23,9 +25,12 @@ class LocalStorageAdapater extends Adapter {
   get(key, callback) {
     const value = this.storage.getItem(key);
 
-    jsonParse(value)
-      .then(deserializedValue => callback(null, deserializedValue))
-      .catch(error => callback(error));
+    try {
+      const deserializedValue = JSON.parse(value);
+      callback(null, deserializedValue);
+    } catch (error) {
+      callback(null, {});
+    }
   }
 }
 

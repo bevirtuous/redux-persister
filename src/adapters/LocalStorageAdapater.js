@@ -1,3 +1,4 @@
+import store from 'store';
 import Adapter from './Adapter';
 
 /**
@@ -8,30 +9,34 @@ class LocalStorageAdapater extends Adapter {
    * @param {string} key The storage key.
    * @param {Object} value The svalue to store.
    * @param {Function} callback Gets called when the action is done.
+   * @return {string}
    */
-  set(key, value, callback) {
+  set(key, value, callback = () => {}) {
     try {
-      const serializedValue = JSON.stringify(value);
-      callback(null, this.storage.setItem(key, serializedValue));
+      const result = this.storage.set(key, value);
+      callback(null, result);
+      return result;
     } catch (error) {
       callback(error);
+      return undefined;
     }
   }
 
   /**
    * @param {string} key The storage key.
    * @param {Function} callback Gets called when the action is done.
+   * @return {Object}
    */
-  get(key, callback) {
-    const value = this.storage.getItem(key);
-
+  get(key, callback = () => { }) {
     try {
-      const deserializedValue = JSON.parse(value);
-      callback(null, deserializedValue);
+      const value = this.storage.get(key);
+      callback(null, value);
+      return value;
     } catch (error) {
       callback(null, {});
+      return undefined;
     }
   }
 }
 
-export default new LocalStorageAdapater(window.localStorage);
+export default new LocalStorageAdapater(store);

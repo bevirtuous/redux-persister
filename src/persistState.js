@@ -73,3 +73,5 @@ export function persistState(config) {
     };
   };
 }
+
+export { localStorageAdapater as storage };

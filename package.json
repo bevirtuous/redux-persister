@@ -45,8 +45,8 @@
   "dependencies": {
     "@virtuous/logger": "^1.0.0",
     "babel-plugin-lodash": "^3.3.4",
-    "babel-plugin-minify-mangle-names": "^0.4.3",
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.10",
+    "store": "^2.0.12"
   },
   "nodemonConfig": {
     "ignore": [

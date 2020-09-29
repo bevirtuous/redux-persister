@@ -1,1 +1,1 @@
-export * from './persistState';
+export { persistState, storage } from './persistState';

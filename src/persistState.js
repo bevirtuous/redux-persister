@@ -1,9 +1,9 @@
 import get from 'lodash/get';
 import set from 'lodash/set';
 import debounce from 'lodash/debounce';
-import { logger } from '@virtuous/logger';
-import localStorageAdapater from './adapters/LocalStorageAdapater';
+import { adapter as localStorageAdapter } from './adapters/LocalStorageAdapter';
 
+const logger = console;
 const defaultPaths = [];
 
 /**
@@ -29,13 +29,15 @@ function getSubset(state, paths = defaultPaths) {
  * @param {Object} config The middleware config.
  * @param {string} [config.key='redux'] The storage key.
  * @param {Array} [config.paths=[]] The paths to store. It persists the whole state of not set.
+ * @param {Object} [config.adapter=localStorageAdapter] A adapter to user a the storage.
+ * @param {Object} [config.logEngine=logger] The log API to use. Defaults to the console API.
  * @return {Function}
  */
 export function persistState(config) {
   const {
     key = 'redux',
     paths = [],
-    adapter = localStorageAdapater,
+    adapter = localStorageAdapter,
     logEngine = logger,
   } = config;
 
@@ -59,4 +61,4 @@ export function persistState(config) {
   };
 }
 
-export { localStorageAdapater as storage };
+export { localStorageAdapter as storage };

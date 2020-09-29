@@ -1,7 +1,7 @@
 /**
- * The base Adapater.
+ * The base Adapter.
  */
-export default class Adapter {
+export class Adapter {
   /**
    * @param {Object} storage A storage instance.
    */

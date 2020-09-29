@@ -1,15 +1,15 @@
 import store from 'store';
-import Adapter from './Adapter';
+import { Adapter } from './Adapter';
 
 /**
- * LocalStorage Adapater
+ * LocalStorage Adapter
  */
-class LocalStorageAdapater extends Adapter {
+class LocalStorageAdapter extends Adapter {
   /**
    * @param {string} key The storage key.
-   * @param {Object} value The svalue to store.
+   * @param {Object|string|Array} value The value to store.
    * @param {Function} callback Gets called when the action is done.
-   * @return {string}
+   * @return {Object|string|Array|undefined} The stored value, or undefined in case of an error.
    */
   set(key, value, callback = () => {}) {
     try {
@@ -25,7 +25,7 @@ class LocalStorageAdapater extends Adapter {
   /**
    * @param {string} key The storage key.
    * @param {Function} callback Gets called when the action is done.
-   * @return {Object}
+   * @return {Object|undefined}
    */
   get(key, callback = () => { }) {
     try {
@@ -39,4 +39,4 @@ class LocalStorageAdapater extends Adapter {
   }
 }
 
-export default new LocalStorageAdapater(store);
+export const adapter = new LocalStorageAdapter(store);

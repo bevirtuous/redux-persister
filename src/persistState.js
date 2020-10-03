@@ -4,18 +4,13 @@ import debounce from 'lodash/debounce';
 import { adapter as localStorageAdapter } from './adapters/LocalStorageAdapter';
 
 const logger = console;
-const defaultPaths = [];
 
 /**
  * @param {Object} state The current state.
  * @param {Array} [paths=[]] The paths to persist.
  * @return {Object}
  */
-function getSubset(state, paths = defaultPaths) {
-  if (!paths.length) {
-    return state;
-  }
-
+function getSubset(state, paths = []) {
   const subset = {};
 
   paths.forEach((entry) => {
